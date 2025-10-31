@@ -16,9 +16,9 @@ function runCommand(command) {
 function copyFilesWindows() {
   console.log('Copying files for Windows...');
 
-  runCommand('mkdir dist\\api\\v1\\core\\db');
+  runCommand('mkdir dist\\api\\v1\\core\\src\\db');
 
-  runCommand('xcopy .\\src\\api\\v1\\core\\db\\ .\\dist\\api\\v1\\core\\db\\ /s /e');
+  runCommand('xcopy .\\src\\api\\v1\\core\\src\\db\\ .\\dist\\api\\v1\\core\\src\\db\\ /s /e');
 
   console.log('Files copied successfully for Windows.');
 }
@@ -26,9 +26,9 @@ function copyFilesWindows() {
 function copyFilesLinux() {
   console.log('Copying files for Linux...');
 
-  runCommand('mkdir -p dist/api/v1/core/db');
+  runCommand('mkdir -p dist/api/v1/core/src/db');
 
-  runCommand('cp -r ./src/api/v1/core/db/* ./dist/api/v1/core/db');
+  runCommand('cp -r ./src/api/v1/core/src/db/* ./dist/api/v1/core/src/db');
 
   console.log('Files copied successfully for Linux.');
 }
@@ -36,9 +36,9 @@ function copyFilesLinux() {
 function copyFilesMac() {
   console.log('Copying files for macOS...');
 
-  runCommand('mkdir -p dist/api/v1/core/db');
+  runCommand('mkdir -p dist/api/v1/core/src/db');
 
-  runCommand('cp -r ./src/api/v1/core/db/* ./dist/api/v1/core/db');
+  runCommand('cp -r ./src/api/v1/core/src/db/* ./dist/api/v1/core/src/db');
 
   console.log('Files copied successfully for macOS.');
 }
