@@ -27,12 +27,12 @@ jobs:
 
       - name: Verify build output
         run: |
-          if [ ! -d "dist/api/v1/core/db" ]; then
-            echo "❌ Error: Directory dist/api/v1/core/db does not exist!"
+          if [ ! -d "dist/api/v1/core/src/db" ]; then
+            echo "❌ Error: Directory dist/api/v1/core/src/db does not exist!"
             exit 1
-          elif [ -z "$(ls -A dist/api/v1/core/db 2>/dev/null)" ]; then
-            echo "❌ Error: No files found in dist/api/v1/core/db!"
+          elif [ -z "$(ls -A dist/api/v1/core/src/db 2>/dev/null)" ]; then
+            echo "❌ Error: No files found in dist/api/v1/core/src/db!"
             exit 1
           else
-            echo "✅ Success: Files found in dist/api/v1/core/db"
+            echo "✅ Success: Files found in dist/api/v1/core/src/db"
           fi
