@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express";
-import { getVotd } from "../core/functions/votd";
+import { getVotd } from "../core";
 import { getFromCache, getVotdExpireTime, setToCache } from "../../../cache";
 
 // Router

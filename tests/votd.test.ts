@@ -1,4 +1,4 @@
-import { getVotd } from "../src/api/v1/core/functions/votd";
+import { getVotd } from "../src/api/v1/core";
 import { expect, it, describe } from "vitest";
 
 describe("getVotd", () => {

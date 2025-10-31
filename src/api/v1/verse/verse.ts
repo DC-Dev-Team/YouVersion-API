@@ -1,7 +1,7 @@
 import express, { Request, Response, Router } from "express";
 import axios from "axios";
 import * as cheerio from "cheerio";
-import { getVerse } from "../core/functions/verse";
+import { getVerse, GetVerseError } from "../core";
 
 // Router
 const router: Router = express.Router();
@@ -78,8 +78,20 @@ router.get("/", async (req: Request, res: Response) => {
     version.toString()
   );
 
-  if (data?.code) return apiError(data.code, data.message);
-  else return res.status(200).send(data);
+  function isGetVerseError(data: any): data is GetVerseError {
+    return (
+      typeof data === "object" &&
+      data !== null &&
+      "code" in data &&
+      "message" in data
+    );
+  }
+
+  if (isGetVerseError(data)) {
+    return apiError(data.code, data.message);
+  } else {
+    return res.status(200).send(data);
+  }
 });
 
 module.exports = router;
