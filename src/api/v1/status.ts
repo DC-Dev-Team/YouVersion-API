@@ -20,6 +20,6 @@ const router: Router = express.Router();
  *               example: OK
  */
 router.get("/", (req: Request, res: Response) => {
-  res.sendStatus(200).json();
+  res.sendStatus(200);
 });
 module.exports = router;
