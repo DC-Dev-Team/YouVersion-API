@@ -4,6 +4,7 @@
   "description": "Express Rest API for getting verses and such from YouVersion. ",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
+  "packageManager": "pnpm@10.17.0",
   "scripts": {
     "copyfiles": "node tools/copyfiles.js",
     "build": "npm run clean && npx tsc && npm run copyfiles",
