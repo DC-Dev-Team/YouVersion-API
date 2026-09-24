@@ -204,10 +204,10 @@ Trying to access a book that does not exist will prompt a similar `400 Bad Respo
 <details>
 <summary>Versions</summary>
 
-`version` accepts a Bible abbreviation (e.g. `KJV`, `NIV`, `BSB`) or a numeric YouVersion Platform Bible id. Which versions work depends on the Bibles enabled for your app key on [platform.youversion.com](https://platform.youversion.com); requesting one that isn't enabled returns a `400` listing the ones that are. To see them directly:
+`version` accepts an English Bible abbreviation (e.g. `KJV`, `ASV`, `BSB`) or a numeric YouVersion Platform Bible id. Only English Bibles are served, since abbreviations repeat across languages (YouVersion's only `KJV` is currently the Thai KJV). Which versions work depends on the Bibles enabled for your app key on [platform.youversion.com](https://platform.youversion.com); requesting one that isn't enabled returns a `400` listing the ones that are. To see them directly:
 
 ```bash
-curl -H "X-YVP-App-Key: $YOU_VERSION_API_KEY" "https://api.youversion.com/v1/bibles?language_ranges[]=*&fields[]=id&fields[]=abbreviation&page_size=*"
+curl -H "X-YVP-App-Key: $YOU_VERSION_API_KEY" "https://api.youversion.com/v1/bibles?language_ranges[]=en&fields[]=id&fields[]=abbreviation&page_size=*"
 ```
 
 The default is `KJV`; set `DEFAULT_BIBLE_VERSION` to change it.
