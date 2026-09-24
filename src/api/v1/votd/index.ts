@@ -62,6 +62,8 @@ router.get("/", async (req: Request, res: Response) => {
     return res.status(200).send(data);
   } catch (err: Error | any) {
     console.error("Error getting verse of the day:", err);
+    if (err?.status === 400)
+      return res.status(400).send({ code: 400, message: err.message });
     return res
       .status(502)
       .send({ code: 502, message: "Error getting verse of the day." });

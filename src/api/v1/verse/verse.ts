@@ -55,7 +55,8 @@ router.get("/", async (req: Request, res: Response) => {
   let book = req.query.book as string;
   const chapter = (req.query.chapter ??= "1");
   const verses = (req.query.verses ??= "-1" as string);
-  let version = (req.query.version ??= "KJV" as string);
+  let version = (req.query.version ??= (process.env.DEFAULT_BIBLE_VERSION ||
+    "KJV") as string);
 
   function apiError(code: number, message: string) {
     res.status(code).send({

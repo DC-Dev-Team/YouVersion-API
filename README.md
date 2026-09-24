@@ -33,7 +33,7 @@ With Docker, pass it at runtime (`docker compose` reads it from your shell or a 
 docker run -e YOU_VERSION_API_KEY=your-app-key -p 3000:3000 youversion-api
 ```
 
-Which Bible versions you can use depends on the licences enabled for your key; a version that isn't enabled returns `403`.
+Which Bible versions you can use depends on the Bibles enabled for your key; see [Versions](#options-and-queries) below.
 
 ## Running
 
@@ -50,7 +50,7 @@ pnpm run start
 | book    | None    | true     | John or JHN |
 | chapter | 1       | false    | 7 or 10     |
 | verses  | All     | false    | 16, 1-3 or 1,5-7 |
-| version | KJV     | false    | KJV or NLT  |
+| version | KJV (`DEFAULT_BIBLE_VERSION`) | false | KJV, BSB or 3034 |
 
 ## Examples
 
@@ -204,14 +204,12 @@ Trying to access a book that does not exist will prompt a similar `400 Bad Respo
 <details>
 <summary>Versions</summary>
 
-| Versions | ID   |
-| -------- | ---- |
-| AMP      | 1588 |
-| ICL00D   | 1196 |
-| KJV      | 1    |
-| NIV      | 111  |
-| NLT      | 116  |
-| NR06     | 122  |
-| VULG     | 823  |
+`version` accepts a Bible abbreviation (e.g. `KJV`, `NIV`, `BSB`) or a numeric YouVersion Platform Bible id. Which versions work depends on the Bibles enabled for your app key on [platform.youversion.com](https://platform.youversion.com); requesting one that isn't enabled returns a `400` listing the ones that are. To see them directly:
+
+```bash
+curl -H "X-YVP-App-Key: $YOU_VERSION_API_KEY" "https://api.youversion.com/v1/bibles?language_ranges[]=*&fields[]=id&fields[]=abbreviation&page_size=*"
+```
+
+The default is `KJV`; set `DEFAULT_BIBLE_VERSION` to change it.
 
 </details>
