@@ -2,7 +2,7 @@ FROM node:23-alpine AS builder
 
 WORKDIR /app
 
-RUN yarn global add pnpm
+RUN yarn global add pnpm@10
 
 COPY package.json ./
 COPY pnpm-lock.yaml ./
@@ -23,7 +23,7 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/pnpm-lock.yaml ./pnpm-lock.yaml
 
-RUN yarn global add pnpm && pnpm install --prod
+RUN yarn global add pnpm@10 && pnpm install --prod
 
 EXPOSE 3000
 
