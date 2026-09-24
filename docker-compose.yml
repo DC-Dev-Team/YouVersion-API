@@ -3,6 +3,8 @@ services:
     build: .
     ports:
       - "3000:3000"
+    environment:
+      - YOU_VERSION_API_KEY=${YOU_VERSION_API_KEY}
 
 networks:
   dokploy-network:

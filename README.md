@@ -19,6 +19,22 @@ git clone --recurse https://github.com/Glowstudent777/YouVersion-API.git && cd Y
 pnpm i && pnpm run build
 ```
 
+## YouVersion Platform app key
+
+Verses are fetched from the official [YouVersion Platform API](https://developers.youversion.com), which needs an app key from [platform.youversion.com](https://platform.youversion.com). Set it as `YOU_VERSION_API_KEY`, either in a `.env` file in the project root or in the environment:
+
+```bash
+echo "YOU_VERSION_API_KEY=your-app-key" > .env
+```
+
+With Docker, pass it at runtime (`docker compose` reads it from your shell or a `.env` next to `docker-compose.yml`):
+
+```bash
+docker run -e YOU_VERSION_API_KEY=your-app-key -p 3000:3000 youversion-api
+```
+
+Which Bible versions you can use depends on the licences enabled for your key; a version that isn't enabled returns `403`.
+
 ## Running
 
 And to run use
@@ -33,12 +49,12 @@ pnpm run start
 | ------- | ------- | -------- | ----------- |
 | book    | None    | true     | John or JHN |
 | chapter | 1       | false    | 7 or 10     |
-| verses  | 1       | false    | 1-3 or 7-10 |
-| version | NIV     | false    | KJV or NLT  |
+| verses  | All     | false    | 16, 1-3 or 1,5-7 |
+| version | KJV     | false    | KJV or NLT  |
 
 ## Examples
 
-Gets `John 1:1 NIV`
+Gets all of `John 1 KJV`
 
 ```
 https://serverAddress.com/api/v1/verse?book=John
@@ -64,10 +80,20 @@ A good API call responds with a `200 OK` and the requested verse(s).
 
 ```json
 {
-  "citation": "John 3:16 NLT",
-  "passage": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life."
+  "verses": {
+    "16": "..."
+  },
+  "citation": "John 3:16",
+  "version": {
+    "id": 116,
+    "abbreviation": "NLT",
+    "title": "...",
+    "copyright": "..."
+  }
 }
 ```
+
+Requesting a whole chapter (no `verses`) also includes a `title`. Show the `version` abbreviation and `copyright` wherever you display the text; YouVersion's terms require attribution.
 
 <br>
 
