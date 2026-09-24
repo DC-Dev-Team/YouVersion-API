@@ -204,7 +204,9 @@ Trying to access a book that does not exist will prompt a similar `400 Bad Respo
 <details>
 <summary>Versions</summary>
 
-`version` accepts an English Bible abbreviation (e.g. `KJV`, `ASV`, `BSB`) or a numeric YouVersion Platform Bible id. Only English Bibles are served, since abbreviations repeat across languages (YouVersion's only `KJV` is currently the Thai KJV). Which versions work depends on the Bibles enabled for your app key on [platform.youversion.com](https://platform.youversion.com); requesting one that isn't enabled returns a `400` listing the ones that are. To see them directly:
+`version` accepts an English Bible abbreviation (e.g. `KJV`, `ASV`, `BSB`) or a numeric YouVersion Platform Bible id. Only English Bibles are served, since abbreviations repeat across languages.
+
+**KJV** (the default) is served from a bundled public-domain copy (`src/api/v1/core/src/db/kjv.json`, 66 books, 31,102 verses) because the YouVersion Platform API doesn't offer the English KJV. KJV requests don't call YouVersion and work without an app key. Which versions work depends on the Bibles enabled for your app key on [platform.youversion.com](https://platform.youversion.com); requesting one that isn't enabled returns a `400` listing the ones that are. To see them directly:
 
 ```bash
 curl -H "X-YVP-App-Key: $YOU_VERSION_API_KEY" "https://api.youversion.com/v1/bibles?language_ranges[]=en&fields[]=id&fields[]=abbreviation&page_size=*"

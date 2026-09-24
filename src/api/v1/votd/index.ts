@@ -24,7 +24,7 @@ const router: Router = express.Router();
  *       - name: version
  *         in: query
  *         required: false
- *         description: Bible version (e.g. KJV, NIV or a numeric id). Overrides lang.
+ *         description: Bible version (e.g. KJV, ASV or a numeric id). Overrides lang. Defaults to KJV when lang is not given.
  *         schema:
  *           type: string
  *     responses:
@@ -38,7 +38,10 @@ const router: Router = express.Router();
  */
 router.get("/", async (req: Request, res: Response) => {
   const lang = (req.query.lang as string) || "en";
-  const version = req.query.version as string | undefined;
+  // Without lang or version, use the same default Bible as /verse.
+  const version =
+    (req.query.version as string | undefined) ??
+    (req.query.lang ? undefined : process.env.DEFAULT_BIBLE_VERSION || "KJV");
   const cacheKey = `votd:${lang}:${version ?? ""}`;
 
   try {
