@@ -42,7 +42,7 @@ describe("getVerse (local KJV)", () => {
     );
   });
 
-  it("John 3:16 (numeric KJV version id)", async () => {
+  it("Proverbs 22:29 (numeric KJV version id)", async () => {
     const result = await getVerse("PRO", "22", "29", "1");
 
     if (!expectVerseRange(result)) {
@@ -50,7 +50,7 @@ describe("getVerse (local KJV)", () => {
     }
 
     expect(result.version?.abbreviation).toBe("KJV");
-    expect(result.verses[29]).toContain("seest thou a man diligent in his business");
+    expect(result.verses[29]).toContain("Seest thou a man diligent in his business");
   });
 
   it("Genesis 1:1-3,5 (range and list)", async () => {
