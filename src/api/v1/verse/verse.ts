@@ -42,6 +42,13 @@ const router: Router = express.Router();
  *         schema:
  *           type: string
  *           default: KJV
+ *       - in: query
+ *         name: language
+ *         required: false
+ *         description: BCP-47 language tag used to select and resolve Bible versions (for example en, es, fr, or yo).
+ *         schema:
+ *           type: string
+ *           default: en
  *     responses:
  *       200:
  *         description: OK
@@ -55,8 +62,14 @@ router.get("/", async (req: Request, res: Response) => {
   let book = req.query.book as string;
   const chapter = (req.query.chapter ??= "1");
   const verses = (req.query.verses ??= "-1" as string);
-  let version = (req.query.version ??= (process.env.DEFAULT_BIBLE_VERSION ||
-    "KJV") as string);
+  const language = (req.query.language ?? "en").toString();
+  let version = req.query.version?.toString();
+
+  // Keep the existing English default. For another language, omitting version
+  // selects the first Bible returned for that language by YouVersion.
+  if (!version && language.toLowerCase().startsWith("en")) {
+    version = process.env.DEFAULT_BIBLE_VERSION || "KJV";
+  }
 
   function apiError(code: number, message: string) {
     res.status(code).send({
@@ -76,7 +89,8 @@ router.get("/", async (req: Request, res: Response) => {
     book,
     chapter.toString(),
     verses.toString(),
-    version.toString(),
+    version,
+    language,
   );
 
   function isGetVerseError(data: any): data is GetVerseError {
