@@ -33,7 +33,7 @@ With Docker, pass it at runtime (`docker compose` reads it from your shell or a 
 docker run -e YOU_VERSION_API_KEY=your-app-key -p 3000:3000 youversion-api
 ```
 
-Which Bible versions you can use depends on the Bibles enabled for your key; see [Versions](#options-and-queries) below.
+Which Bible versions and languages you can use depends on the Bibles enabled for your key; see [Versions](#options-and-queries) below.
 
 ## Running
 
@@ -50,7 +50,8 @@ pnpm run start
 | book    | None    | true     | John or JHN |
 | chapter | 1       | false    | 7 or 10     |
 | verses  | All     | false    | 16, 1-3 or 1,5-7 |
-| version | KJV (`DEFAULT_BIBLE_VERSION`) | false | KJV, BSB or 3034 |
+| version | KJV for English; first compatible version otherwise | false | KJV, BSB or 3034 |
+| language | en | false | en, es, fr or yo |
 
 ## Examples
 
@@ -67,6 +68,36 @@ Gets `John 3:16 NLT`
 ```
 https://serverAddress.com/api/v1/verse?book=John&chapter=3&verses=16&version=NLT
 ```
+
+Gets `John 3:16` in the first Spanish Bible available to the configured app key that contains John:
+
+```
+https://serverAddress.com/api/v1/verse?book=John&chapter=3&verses=16&language=es
+```
+
+Gets `John 3:16` in a specific Spanish version:
+
+```
+https://serverAddress.com/api/v1/verse?book=John&chapter=3&verses=16&language=es&version=RVR1960
+```
+
+Book names may be supplied using the documented English names or language-independent USFM codes such as `JHN`.
+
+## Listing versions
+
+List versions available for one language:
+
+```
+https://serverAddress.com/api/v1/versions?language=es
+```
+
+List versions across every language accessible to the configured app key:
+
+```
+https://serverAddress.com/api/v1/versions?language=*
+```
+
+The response includes each version's id, abbreviation, language tag, and whether it comes from the bundled local KJV or YouVersion.
 
 ---
 
@@ -204,16 +235,16 @@ Trying to access a book that does not exist will prompt a similar `400 Bad Respo
 <details>
 <summary>Versions</summary>
 
-`version` accepts an English Bible abbreviation (e.g. `KJV`, `ASV`, `BSB`) or a numeric YouVersion Platform Bible id. Only English Bibles are served, since abbreviations repeat across languages.
+`version` accepts a Bible abbreviation (e.g. `KJV`, `ASV`, `BSB`) or a numeric YouVersion Platform Bible id. Use `language` to scope abbreviation matching because abbreviations can repeat across languages. English is the default. For a non-English request with no `version`, the first enabled Bible in that language that contains the requested book is used.
 
 **KJV** (the default) is served from a bundled public-domain copy (`src/api/v1/core/src/db/kjv.json`, 66 books, 31,102 verses) because the YouVersion Platform API doesn't offer the English KJV. KJV requests don't call YouVersion and work without an app key.
 
-Other versions come from YouVersion. Which ones work depends on the Bibles enabled for your app key on [platform.youversion.com](https://platform.youversion.com); requesting one that isn't enabled returns a `400` listing the ones that are. To see them directly:
+Other versions and languages come from YouVersion. Which ones work depends on the Bibles enabled for your app key on [platform.youversion.com](https://platform.youversion.com); requesting one that isn't enabled returns a `400` listing the ones available for the requested language. Use this API's `/api/v1/versions` endpoint, or query YouVersion directly:
 
 ```bash
-curl -H "X-YVP-App-Key: $YOU_VERSION_API_KEY" "https://api.youversion.com/v1/bibles?language_ranges[]=en&fields[]=id&fields[]=abbreviation&page_size=*"
+curl -H "X-YVP-App-Key: $YOU_VERSION_API_KEY" "https://api.youversion.com/v1/bibles?language_ranges[]=*&fields[]=id&fields[]=abbreviation&fields[]=language_tag&page_size=*"
 ```
 
-The default is `KJV`; set `DEFAULT_BIBLE_VERSION` to change it.
+The English default is `KJV`; set `DEFAULT_BIBLE_VERSION` to change it.
 
 </details>
