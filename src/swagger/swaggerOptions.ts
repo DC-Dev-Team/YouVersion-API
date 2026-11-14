@@ -12,9 +12,7 @@ export const swaggerOptions: swaggerJSDoc.Options = {
       }
     }
   },
-  apis: [
-    "./dist/api/v1/verse/*.js",
-    "./dist/api/v1/votd/*.js",
-    "./dist/api/v1/status.js"
-  ]
+  // Discover annotations from every v1 route so new endpoints are included
+  // in Swagger without requiring another manual path entry.
+  apis: ["./dist/api/v1/**/*.js"]
 };
