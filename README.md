@@ -97,7 +97,7 @@ List versions across every language accessible to the configured app key:
 https://serverAddress.com/api/v1/versions?language=*
 ```
 
-The response includes each version's id, abbreviation, language tag, and whether it comes from the bundled local KJV or YouVersion.
+Each version includes its id, abbreviation, full title, language tag, and source. For example, the bundled KJV entry has `"abbreviation": "KJV"` and `"title": "King James Version"`.
 
 ---
 
